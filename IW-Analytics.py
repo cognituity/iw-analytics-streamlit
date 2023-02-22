@@ -33,7 +33,8 @@ monthly_sentiment_df = load_data('monthly_sentiment.parquet')
 #wordcloud_sent_perc_df = pq.read_pandas('data/wordcloud_sent_perc.parquet').to_pandas()
 
 
-perc_df = pd.read_csv("data/sentiment_perc.csv", engine='python')
+#perc_df = pd.read_csv("data/sentiment_perc.csv", engine='python')
+perc_df = load_data('monthly_sentiment.parquet')
 perc_df['ep_dates'] = pd.to_datetime(perc_df['episode_month'])
 min_date = perc_df['ep_dates'].dt.date.min()
 max_date = perc_df['ep_dates'].dt.date.max()
