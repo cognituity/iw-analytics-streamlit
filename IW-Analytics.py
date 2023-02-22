@@ -132,7 +132,9 @@ with wcol3:
 st.markdown(f"### Sentiment Over Days Of Week")
 day_df_unpivot = perc_df.groupby(['episode_month','episode_day'])[['average_neg_sentiment', 'average_neu_sentiment', 'average_pos_sentiment']].mean().reset_index()
 day_df_unpivot = pd.melt(day_df_unpivot, id_vars='episode_day', value_vars=['average_neg_sentiment', 'average_neu_sentiment', 'average_pos_sentiment'])
-days_fig = px.box(day_df_unpivot,x='episode_day',y='value',color='variable')
+days_fig = px.box(day_df_unpivot,x='episode_day',y='value',color='variable', color_discrete_map={'average_neg_sentiment':'red',
+                                'average_neu_sentiment':'grey',
+                                'average_pos_sentiment':'green'})
 days_fig.update_xaxes(categoryorder='array', categoryarray= ['sun','mon','tue','wed','thu','fri'])
 st.plotly_chart(days_fig, theme="streamlit", use_container_width=True)
 
