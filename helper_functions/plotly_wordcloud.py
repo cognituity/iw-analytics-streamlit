@@ -40,7 +40,7 @@ def plotly_wordcloud(text):
                        textfont = dict(size=new_freq_list,
                                        color=color_list),
                        hoverinfo='text',
-                       hovertext=['{0}{1}'.format(w, f) for w, f in zip(word_list, freq_list)],
+                       hovertext=['{0} {1}'.format(w, f) for w, f in zip(word_list, freq_list)],
                        mode='text',  
                        text=word_list
                       )
