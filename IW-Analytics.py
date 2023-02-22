@@ -12,7 +12,7 @@ import pyarrow.parquet as pq
 page_title = 'Infowars Analytics'
 st.set_page_config(page_title=page_title, page_icon="📈",layout="wide",initial_sidebar_state='collapsed')
 st.markdown(f"# {page_title}")
-st.sidebar.header(page_title)
+
 
 @st.cache_data
 def load_data(file_name):
@@ -21,25 +21,16 @@ def load_data(file_name):
     return df
 
     
-#word_seg_df = pq.read_pandas('data/ep_segments.parquet').to_pandas()
-#word_seg_df = load_data('ep_segments.parquet')
-
-#curse_word_df = pq.read_pandas('data/curse_words.parquet').to_pandas()
 curse_word_df = load_data('curse_words.parquet')
 
-#df = pq.read_pandas('data/monthly_sentiment.parquet').to_pandas()
 monthly_sentiment_df = load_data('monthly_sentiment.parquet')
 
-#wordcloud_sent_perc_df = pq.read_pandas('data/wordcloud_sent_perc.parquet').to_pandas()
-
-
-#perc_df = pd.read_csv("data/sentiment_perc.csv", engine='python')
 perc_df = load_data('monthly_sentiment.parquet')
 perc_df['ep_dates'] = pd.to_datetime(perc_df['episode_month'])
 min_date = perc_df['ep_dates'].dt.date.min()
 max_date = perc_df['ep_dates'].dt.date.max()
 
-sent_perc_df = perc_df.groupby('seg_start_perc')[['average_neg_sentiment','average_neu_sentiment','average_pos_sentiment','avg_count_store_mentions']].mean().reset_index()
+sent_perc_df = perc_df.groupby('seg_start_perc')[['average_neg_sentiment','average_neu_sentiment','average_pos_sentiment','count_store_mentions']].mean().reset_index()
 
 st.markdown(f'''
     This is a text analysis of the Alex Jones Show on InfoWars. Episodes between {min_date} & {max_date}.
@@ -60,14 +51,7 @@ with st.expander('About the page.'):
     - [Postgres](https://www.postgresql.org)
 
     ''')
-'''
-with st.sidebar:
-    with st.form(key='filter'):
-        min_date_picker = st.date_input("Select a minimum date", value=min_date)
-        max_date_picker = st.date_input("Select a max date", value=max_date)
-        submit_button = st.form_submit_button(label='Apply')
 
-'''
 st.markdown(f'''### Average Sentiment Over Time
 
 This chart shows the average sentiment of episodes over time.  
@@ -75,9 +59,9 @@ This chart shows the average sentiment of episodes over time.
 
 df_unpivot = monthly_sentiment_df.groupby('episode_month')[['average_neg_sentiment', 'average_neu_sentiment', 'average_pos_sentiment']].mean().reset_index()
 df_unpivot = pd.melt(df_unpivot, id_vars='episode_month', value_vars=['average_neg_sentiment', 'average_neu_sentiment', 'average_pos_sentiment'])
-fig = px.line(df_unpivot, x="episode_month",y="value", color='variable', color_discrete_map={'avg_neg_sentiment':'red',
-                                 'avg_neu_sentiment':'grey',
-                                 'avg_pos_sentiment':'green'
+fig = px.line(df_unpivot, x="episode_month",y="value", color='variable', color_discrete_map={'average_neg_sentiment':'red',
+                                 'average_neu_sentiment':'grey',
+                                 'average_pos_sentiment':'green'
                                  })
 fig.update_layout(
     xaxis_title="Episode Month",
@@ -93,11 +77,11 @@ st.markdown('''### Average Sentiment & Store Mentions During an Episode
 
 This chart shows the average sentiment journey of an episode along with how often the infowars store is mentioned.  
 ''')
-m_sent_perc_df = pd.melt(sent_perc_df, id_vars='seg_start_perc', value_vars=['average_neg_sentiment', 'average_neu_sentiment', 'average_pos_sentiment','avg_count_store_mentions'])
+m_sent_perc_df = pd.melt(sent_perc_df, id_vars='seg_start_perc', value_vars=['average_neg_sentiment', 'average_neu_sentiment', 'average_pos_sentiment','count_store_mentions'])
 perc_fig = px.line(m_sent_perc_df, x="seg_start_perc",y="value", color='variable', color_discrete_map={'average_neg_sentiment':'red',
                                 'average_neu_sentiment':'grey',
                                 'average_pos_sentiment':'green',
-                                'avg_count_store_mentions':'blue'
+                                'count_store_mentions':'blue'
                                 })
 perc_fig.update_layout(
     xaxis_title="Episode % Duration",
@@ -146,7 +130,7 @@ with wcol3:
     st.plotly_chart(pos_wrd_fig, theme="streamlit", use_container_width=True)
 
 st.markdown(f"### Sentiment Over Days Of Week")
-day_df_unpivot = df.groupby(['episode_month','episode_day'])[['average_neg_sentiment', 'average_neu_sentiment', 'average_pos_sentiment']].mean().reset_index()
+day_df_unpivot = perc_df.groupby(['episode_month','episode_day'])[['average_neg_sentiment', 'average_neu_sentiment', 'average_pos_sentiment']].mean().reset_index()
 day_df_unpivot = pd.melt(day_df_unpivot, id_vars='episode_day', value_vars=['average_neg_sentiment', 'average_neu_sentiment', 'average_pos_sentiment'])
 days_fig = px.box(day_df_unpivot,x='episode_day',y='value',color='variable')
 days_fig.update_xaxes(categoryorder='array', categoryarray= ['sun','mon','tue','wed','thu','fri'])
