@@ -23,7 +23,7 @@ with st.expander('About the page.'):
     - [OpenAI Whisper](https://github.com/openai/whisper) - Speech to Text
     - [Twitter-roBERTa-base](https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest) - Sentiment Analysis
     - [Postgres](https://www.postgresql.org) - Database
-    - [Streamlit] (https://streamlit.io/) - App development & hosting
+    - [Streamlit](https://streamlit.io/) - App development & hosting
 
     ''')
 
@@ -56,7 +56,7 @@ st.markdown(f'''
     The charts in this analysis are interactive:
 
         - Mouseover to show data on a single point on the chart
-        
+
         - Clicking on an item on the legend will remove it from the chart
     
 
