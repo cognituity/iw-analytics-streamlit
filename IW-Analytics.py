@@ -54,7 +54,9 @@ st.markdown(f'''
     *Note: This analysis is not restricted to words spoken by Alex Jones, only words spoken on the Alex Jones show (including advertisements by third party companies)*
     
     The charts in this analysis are interactive:
+
         - Mouseover to show data on a single point on the chart
+        
         - Clicking on an item on the legend will remove it from the chart
     
 
