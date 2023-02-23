@@ -77,7 +77,8 @@ This chart shows the average sentiment of episodes over time.
 
 df_unpivot = monthly_sentiment_df.groupby('episode_month')[['average_neg_sentiment', 'average_neu_sentiment', 'average_pos_sentiment']].mean().reset_index()
 df_unpivot = pd.melt(df_unpivot, id_vars='episode_month', value_vars=['average_neg_sentiment', 'average_neu_sentiment', 'average_pos_sentiment'])
-fig = px.line(df_unpivot, x="episode_month",y="value", color='variable', color_discrete_map={'average_neg_sentiment':'red',
+fig = px.line(df_unpivot, x="episode_month",y="value", color='variable', title="Average Sentiment Over Time",
+                    color_discrete_map={'average_neg_sentiment':'red',
                                  'average_neu_sentiment':'grey',
                                  'average_pos_sentiment':'green'
                                  })
@@ -97,7 +98,8 @@ This chart shows the average sentiment journey of an episode (averaging out acro
 ''')
 m_sent_perc_df = pd.melt(sent_perc_df, id_vars='seg_start_perc', value_vars=['average_neg_sentiment', 'average_neu_sentiment', 'average_pos_sentiment','count_store_mentions'])
 m_sent_perc_df['seg_start_perc'] = m_sent_perc_df['seg_start_perc']*100
-perc_fig = px.line(m_sent_perc_df, x="seg_start_perc",y="value", color='variable', color_discrete_map={'average_neg_sentiment':'red',
+perc_fig = px.line(m_sent_perc_df, x="seg_start_perc",y="value", color='variable', title="Average Sentiment Of IW Episodes",
+            color_discrete_map={'average_neg_sentiment':'red',
                                 'average_neu_sentiment':'grey',
                                 'average_pos_sentiment':'green',
                                 'count_store_mentions':'blue'
