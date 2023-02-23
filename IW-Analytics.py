@@ -23,7 +23,7 @@ with st.expander('About the page.'):
     - [OpenAI Whisper](https://github.com/openai/whisper) - Speech to Text
     - [Twitter-roBERTa-base](https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest) - Sentiment Analysis
     - [Postgres](https://www.postgresql.org) - Database
-    - [Streamlit]https://streamlit.io/) - App development & hosting
+    - [Streamlit] (https://streamlit.io/) - App development & hosting
 
     ''')
 
@@ -53,6 +53,12 @@ st.markdown(f'''
 
     *Note: This analysis is not restricted to words spoken by Alex Jones, only words spoken on the Alex Jones show (including advertisements by third party companies)*
     
+    The charts in this analysis are interactive:
+        - Mouseover to show data on a single point on the chart
+        - Clicking on an item on the legend will remove it from the chart
+    
+
+
     ### Transcription Progress
 
     The below table outlines the current status of episode transcription used in this analysis.
@@ -85,7 +91,7 @@ st.plotly_chart(fig, theme="streamlit", use_container_width=True)
 
 st.markdown('''### Average Sentiment & Store Mentions During an Episode
 
-This chart shows the average sentiment journey of an episode along with how often the infowars store is mentioned.  
+This chart shows the average sentiment journey of an episode (averaging out across all current transcribed episodes) along with an average count per percentage of how often the infowars store (infowarsstore.com) is mentioned.  
 ''')
 m_sent_perc_df = pd.melt(sent_perc_df, id_vars='seg_start_perc', value_vars=['average_neg_sentiment', 'average_neu_sentiment', 'average_pos_sentiment','count_store_mentions'])
 m_sent_perc_df['seg_start_perc'] = m_sent_perc_df['seg_start_perc']*100
